@@ -15,7 +15,7 @@ module.exports = {
       {
         // 拡張子 css のファイル（正規表現）;
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
       {
         test: /(\.ts|\.tsx)$/,
