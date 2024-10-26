@@ -9,6 +9,8 @@ export const Heading: React.FC<PropsWithChildren<Props>> = ({
   level,
   children,
 }) => {
+  console.log("Headdingコンポーネントのレンダー");
+
   if (level === "h1") return <h1 className="font-bold text-5xl">{children}</h1>;
   if (level === "h2") return <h2 className="font-bold text-4xl">{children}</h2>;
   if (level === "h3") return <h3 className="font-bold text-3xl">{children}</h3>;

@@ -1,26 +1,14 @@
 import * as React from "react";
-import { createRoot } from "react-dom/client";
-import TodoList from "./components/todo/TodoList";
-import { Heading } from "./components/parts/Headding";
-import { useState } from "react";
-import { NewTodoForm } from "./components/todo/NewTodoForm";
-
-export type Todo = {
-  id: number;
-  task: string;
-  person: string;
-  deadline: string;
-};
+import { useAuth } from "./hooks/use-auth";
+import { Login } from "./pages/Login";
+import { Todo } from "./pages/Todo";
 
 export const App = () => {
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  const { isLoggedIn } = useAuth();
 
-  return (
-    <main className="my-0 mx-auto w-4/5 text-center">
-      <Heading level="h2">TODO</Heading>
-      <NewTodoForm setTodoList={setTodoList} />
+  if (!isLoggedIn) {
+    return <Login />;
+  }
 
-      <TodoList todoList={todoList} />
-    </main>
-  );
+  return <Todo />;
 };

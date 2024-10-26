@@ -1,6 +1,7 @@
 import * as React from "react";
 
 type Props = {
+  id: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -8,20 +9,23 @@ type Props = {
 };
 
 export const TextFlild: React.FC<Props> = ({
+  id,
   label,
   value,
   onChange,
   type,
 }) => {
+  console.log("TextFeildコンポーネントのレンダー");
   return (
-    <>
-      <label htmlFor="">{label}</label>
+    <div className="flex gap-1 items-center">
+      <label htmlFor={id}>{label}</label>
       <input
-        className="border"
+        className="border rounded p-1"
+        id={id}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-    </>
+    </div>
   );
 };
