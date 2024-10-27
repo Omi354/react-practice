@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Todo } from "../types/todo";
 
 export const useTodoList = () => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [filterWord, setFilterWord] = useState<string>("");
 
   useEffect(() => {
     const todoListData = localStorage.getItem("todo-list");
@@ -27,9 +28,25 @@ export const useTodoList = () => {
     ]);
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = useCallback((id: number) => {
     setTodoList((prev) => prev.filter((item) => item.id !== id));
-  };
+  }, []);
 
-  return { todoList, setTodoList, addTodo, deleteTodo };
+  const filteredTodoList = useMemo(
+    () =>
+      todoList.filter(
+        (todo) =>
+          todo.task.includes(filterWord) || todo.person.includes(filterWord),
+      ),
+    [todoList, filterWord],
+  );
+
+  return {
+    todoList: filteredTodoList,
+    setTodoList,
+    addTodo,
+    deleteTodo,
+    filterWord,
+    setFilterWord,
+  };
 };
