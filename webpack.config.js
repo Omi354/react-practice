@@ -1,11 +1,12 @@
-const { devtools } = require("globals");
+const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: "./src/js/index.tsx",
   output: {
-    path: `${__dirname}/dist/`,
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
     filename: "bundle.js",
   },
   mode: "development",
@@ -13,12 +14,11 @@ module.exports = {
   module: {
     rules: [
       {
-        // 拡張子 css のファイル（正規表現）;
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
       {
-        test: /(\.ts|\.tsx)$/,
+        test: /\.(ts|tsx)$/,
         use: "ts-loader",
       },
     ],
@@ -26,15 +26,25 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
+      filename: "index.html",
     }),
     new MiniCssExtractPlugin(),
   ],
-  devServer: {
-    static: {
-      directory: "./dist",
-    },
-  },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
+  },
+  devServer: {
+    historyApiFallback: {
+      historyApiFallback: true,
+    },
+    devMiddleware: {
+      writeToDisk: (filePath) => {
+        // hot-update ファイルを除外
+        return !/\.hot-update\.(js|json|js\.map)$/.test(filePath);
+      },
+    },
   },
 };

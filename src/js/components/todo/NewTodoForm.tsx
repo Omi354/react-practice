@@ -1,7 +1,6 @@
 import * as React from "react";
-import { TextFlild } from "../parts/TextFeild";
 import { useState } from "react";
-import { Button } from "../parts/Button";
+import { Box, Button, TextField } from "@mui/material";
 
 type Props = {
   addTodo: (newTask: string, newPerson: string, newDeadline: string) => void;
@@ -21,31 +20,35 @@ export const NewTodoForm: React.FC<Props> = ({ addTodo }) => {
   };
 
   return (
-    <div className="flex gap-1">
-      <TextFlild
+    <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+      <TextField
         id="new-task"
-        type="text"
         label="タスク名"
-        value={newTask}
-        onChange={setNewTask}
-      />
-      <TextFlild
-        id="new-person"
+        variant="outlined"
         type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+      />
+      <TextField
+        id="new-person"
         label="担当者"
+        variant="outlined"
+        type="text"
         value={newPerson}
-        onChange={setNewPerson}
+        onChange={(e) => setNewPerson(e.target.value)}
       />
-      <TextFlild
+      <TextField
         id="new-deadline"
-        type="date"
         label="締切"
+        variant="outlined"
+        type="date"
         value={newDeadline}
-        onChange={setNewDeadline}
+        onChange={(e) => setNewDeadline(e.target.value)}
       />
-      <Button color="blue" onClick={addNewTodo}>
+
+      <Button variant="contained" onClick={addNewTodo}>
         追加
       </Button>
-    </div>
+    </Box>
   );
 };

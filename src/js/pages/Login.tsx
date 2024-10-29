@@ -1,27 +1,55 @@
 import * as React from "react";
-import { Button } from "../components/parts/Button";
-import { Heading } from "../components/parts/Headding";
-import { TextFlild } from "../components/parts/TextFeild";
 import { useAuth } from "../hooks/use-auth";
+import Button from "@mui/material/Button";
+import { Box, Container, TextField, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const { userName, setUserName, login } = useAuth();
-  console.log("Loginコンポーネントのレンダー");
+  const { userName, isLoggedIn, setUserName, login } = useAuth();
+  const navigate = useNavigate();
+
+  // ログイン中だった場合は、/todoに遷移させる
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/todo");
+    }
+  }, [isLoggedIn]);
+
   return (
-    <main className="my-0 mx-auto w-4/5 text-center">
-      <Heading level="h1">ログイン</Heading>
-      <div className="flex gap-1">
-        <TextFlild
-          id="userName"
-          type="text"
-          label="ユーザー名"
-          value={userName}
-          onChange={setUserName}
-        />
-        <Button color="blue" onClick={login}>
-          ログイン
-        </Button>
-      </div>
-    </main>
+    <Box
+      component="main"
+      sx={{
+        my: 0,
+        mx: "auto",
+        width: "720px",
+        textAlign: "center",
+      }}
+    >
+      <Container sx={{ py: 3, px: 5 }}>
+        <Typography variant="h1">ログイン</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            justifyContent: "center",
+            mt: 4,
+          }}
+        >
+          <TextField
+            id="userName"
+            type="text"
+            label="ユーザー名"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          >
+            ログイン
+          </TextField>
+          <Button variant="contained" onClick={login} sx={{ py: 0, px: 1 }}>
+            ログイン
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };

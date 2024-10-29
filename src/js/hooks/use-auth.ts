@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-const USER_NAME_KEY = "user-name";
+export const USER_NAME_KEY = "user-name";
 
 export const useAuth = () => {
   const { isLoggedIn, setIsLoggedIn, userName, setUserName } =
@@ -25,7 +25,7 @@ export const useAuth = () => {
   useEffect(() => {
     const loginUser = localStorage.getItem(USER_NAME_KEY);
     if (loginUser) {
-      setUserName(loginUser);
+      setUserName(JSON.parse(loginUser));
       setIsLoggedIn(true);
     }
   }, []);

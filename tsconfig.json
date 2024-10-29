@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "sourceMap": true,
     "target": "ES6",
-    "module": "ES2015",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "baseUrl": "/home/naomichi/react-practice/",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "strict": true
   }
 }
