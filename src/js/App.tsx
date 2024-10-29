@@ -2,13 +2,20 @@ import * as React from "react";
 import { useAuth } from "./hooks/use-auth";
 import { Login } from "./pages/Login";
 import { Todo } from "./pages/Todo";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
-export const App = () => {
-  const { isLoggedIn } = useAuth();
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route path="/login" element={<Login />} />
+      <Route path="/todo" element={<Todo />} />
+    </>,
+  ),
+);
 
-  if (!isLoggedIn) {
-    return <Login />;
-  }
-
-  return <Todo />;
-};
+export const App = () => <RouterProvider router={router} />;

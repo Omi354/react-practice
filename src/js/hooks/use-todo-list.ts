@@ -12,25 +12,25 @@ export const useTodoList = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("todo-list", JSON.stringify(todoList));
-  }, [todoList]);
-
   const addTodo = (newTask: string, newPerson: string, newDeadline: string) => {
-    setTodoList((prev) => [
-      ...prev,
+    const updatedTodoList = [
+      ...todoList,
       {
         id: Date.now(),
         task: newTask,
         person: newPerson,
         deadline: newDeadline,
       },
-    ]);
+    ];
+    localStorage.setItem("todo-list", JSON.stringify(updatedTodoList));
+    setTodoList(updatedTodoList);
   };
 
-  const deleteTodo = useCallback((id: number) => {
-    setTodoList((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+  const deleteTodo = (id: number) => {
+    const updatedTodoList = todoList.filter((todo) => todo.id !== id);
+    localStorage.setItem("todo-list", JSON.stringify(updatedTodoList));
+    setTodoList(updatedTodoList);
+  };
 
   const filteredTodoList = useMemo(
     () =>

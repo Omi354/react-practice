@@ -1,48 +1,106 @@
 import * as React from "react";
-import { Button } from "../components/parts/Button";
-import { Heading } from "../components/parts/Headding";
 import { NewTodoForm } from "../components/todo/NewTodoForm";
-import TodoList from "../components/todo/TodoList";
 import { useTodoList } from "../hooks/use-todo-list";
 import { useAuth } from "../hooks/use-auth";
-import { TextFlild } from "../components/parts/TextFeild";
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonProps,
+  Stack,
+  styled,
+  TextField,
+  Typography,
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { TodoTable } from "../components/todo/TodoTable";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const Todo = () => {
   const { todoList, addTodo, deleteTodo, filterWord, setFilterWord } =
     useTodoList();
   const { logout, isLoggedIn, userName } = useAuth();
-  console.log("Todoコンポーネントのレンダー");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn]);
 
   return (
-    <main className="my-0 mx-auto w-4/5 text-center">
-      <Heading level="h1">TODO</Heading>
-      <div>{isLoggedIn ? userName : "ログアウト中"}</div>
-      <div>
-        <Button color="red" onClick={logout}>
-          ログアウト
-        </Button>
-      </div>
-      <div className="mt-8">
-        <Heading level="h2">新規TODO作成</Heading>
-        <div className="mt-8">
+    <Box component="main" sx={{ width: "720px", mx: "auto", mt: 5 }}>
+      <Stack
+        component="header"
+        direction="row"
+        spacing={3}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h1">TODO</Typography>
+        <Stack
+          direction="row"
+          spacing={3}
+          sx={{
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <Stack direction="row" spacing={0}>
+            <AccountCircleIcon />
+            <Box>{isLoggedIn ? userName : "ログアウト中"}</Box>
+          </Stack>
+          <Box>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={logout}
+              sx={{
+                backgroundColor: "#ef5350",
+                color: "#FFFFFF",
+              }}
+            >
+              ログアウト
+            </Button>
+          </Box>
+        </Stack>
+      </Stack>
+      <Box sx={{ mt: 8 }} component="section">
+        <Typography variant="h2">新規TODO作成</Typography>
+        <Box sx={{ mt: 4 }}>
           <NewTodoForm addTodo={addTodo} />
-        </div>
-      </div>
-      <div className="mt-8">
-        <Heading level="h2">TODO一覧</Heading>
-        <div className="mt-8">
-          <TextFlild
+        </Box>
+      </Box>
+      <Box sx={{ mt: 8 }} component="section">
+        <Typography variant="h2">TODO一覧</Typography>
+
+        <Box
+          sx={{
+            mt: 4,
+            display: "flex", // フレックスボックスを有効にする
+            flexDirection: "row", // 子要素を横並びにする
+            justifyContent: "flexStart", // 左寄せ
+          }}
+        >
+          <TextField
             id={"filter-word"}
             label={"絞込み"}
             value={filterWord}
-            onChange={setFilterWord}
+            onChange={(e) => setFilterWord(e.target.value)}
             type={"text"}
-          ></TextFlild>
-        </div>
-        <div className="mt-8">
-          <TodoList todoList={todoList} deleteTodo={deleteTodo} />
-        </div>
-      </div>
-    </main>
+            InputProps={{
+              sx: { textAlign: "left" }, // テキストを左寄せ
+            }}
+          >
+            絞込み
+          </TextField>
+        </Box>
+        <Box sx={{ mt: 4 }}>
+          <TodoTable todoList={todoList} deleteTodo={deleteTodo} />
+        </Box>
+      </Box>
+    </Box>
   );
 };
